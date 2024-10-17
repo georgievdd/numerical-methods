@@ -1,3 +1,4 @@
+#include <string>
 #include <vector>
 #include <stdexcept>
 #include <iterator>
@@ -33,7 +34,7 @@ namespace matrix {
             Matrix matrix(n, m);
             std::random_device rd;
             std::mt19937 gen(rd());
-            std::uniform_real_distribution<T> dis(0.0, 10000.0);
+            std::uniform_real_distribution<T> dis(0.0, 10.0);
 
             for (size_t i = 0; i < n; ++i) {
                 for (size_t j = 0; j < m; ++j) {
@@ -441,7 +442,14 @@ namespace matrix {
         std::ostream& operator<<(std::ostream& os, const Matrix<T>& matrix) {
             for (size_t i = 0; i < matrix.rowCount(); ++i) {
                 for (size_t j = 0; j < matrix.colCount(); ++j) {
-                    os << matrix.row(i)[j];
+                    auto s = std::to_string(matrix.row(i)[j]);
+                    while (s.length() < 10) {
+                        s = " " + s;
+                    }
+                    while (s.length() > 10) {
+                        s.pop_back();
+                    }
+                    os << s;
                     if (matrix.colCount() != j + 1)
                         os << " ";
                 }
